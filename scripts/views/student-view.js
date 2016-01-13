@@ -43,7 +43,9 @@ var StudentListView = Backbone.View.extend ({
                 student.set({'seen': false});
             } 
             student.save();
+            this.render();
         }
+
     },
 
     getTemplate: function(student) {
