@@ -30,7 +30,7 @@ var StudentListView = Backbone.View.extend ({
         this.render();
     },
 
-    seeMovie: function(event) {
+    seeStudent: function(event) {
 
         var $input = $(event.currentTarget);
         var inputValue = $input.val();
