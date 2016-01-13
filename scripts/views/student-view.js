@@ -8,11 +8,10 @@ var StudentListView = Backbone.View.extend ({
     },
 
     initialize: function() {
-
         this.myStudentCollection = new StudentCollection();
+        this.myStudentCollection.fetch();
         this.render();
-
-  },
+    },
 
     addStudent: function(event) {
         event.preventDefault();
@@ -27,6 +26,7 @@ var StudentListView = Backbone.View.extend ({
         });
 
         this.myStudentCollection.add(student);
+        student.save();
         this.render();
     },
 
@@ -77,11 +77,13 @@ var StudentListView = Backbone.View.extend ({
 
     render: function() {
         var $renderTarget = this.$('.student-list');
+        console.log($renderTarget)
         $renderTarget.empty();
 
         var allStudent = this.myStudentCollection.toJSON();
 
         for (var i = 0; i < allStudent.length; i++) {
+
             var student = allStudent[i];
             var studentTemplate = this.getTemplate(student);
             $renderTarget.append(studentTemplate);
