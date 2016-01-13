@@ -45,12 +45,12 @@ var StudentListView = Backbone.View.extend ({
         }
     },
 
-    getTemplate: function(movie) {
+    getTemplate: function(student) {
 
         var isSeenChecked = '';
         var isNotSeenChecked = 'checked';
 
-        if (movie.seen) {
+        if (student.seen) {
             isSeenChecked = 'checked';
             isNotSeenChecked = '';
         }
