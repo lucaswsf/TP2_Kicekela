@@ -37,22 +37,23 @@ var StudentListView = Backbone.View.extend ({
         var studentName = $input.parents('li').attr('data-name');
         var student = this.myStudentCollection.findWhere({'name': studentName});
         if (student) {
-            if (inputValue === 'seen') {
+            if (inputValue === 'present') {
                 student.set({'seen': true});
             } else {
                 student.set({'seen': false});
-            }
+            } 
+            student.save();
         }
     },
 
     getTemplate: function(student) {
 
-        var isSeenChecked = '';
-        var isNotSeenChecked = 'checked';
+        var isPresentChecked = 'checked';
+        var isNotPresentChecked = '';
 
-        if (student.seen) {
-            isSeenChecked = 'checked';
-            isNotSeenChecked = '';
+        if (!student.seen) {
+            isPresentChecked = '';
+            isNotPresentChecked = 'checked';
         }
 
         var studentTemplate = '\
@@ -63,11 +64,11 @@ var StudentListView = Backbone.View.extend ({
                 </div>\
             </div>\
             <form>\
-                <div class="seen">\
-                    <input type="radio" name="seenRadio" value="seen" '+ isSeenChecked + ' /> Seen\
+                <div class="here">\
+                    <input type="radio" name="presentRadio" value="present" '+ isPresentChecked + ' /> Présent\
                 </div>\
-                <div class="seen">\
-                    <input type="radio" name="seenRadio" value="notseen" ' + isNotSeenChecked + '> Not seen\
+                <div class="here">\
+                    <input type="radio" name="presentRadio" value="notpresent" ' + isNotPresentChecked + '> Absent\
                 </div>\
             </form>\
         </li>';
@@ -77,17 +78,28 @@ var StudentListView = Backbone.View.extend ({
 
     render: function() {
         var $renderTarget = this.$('.student-list');
-        console.log($renderTarget)
         $renderTarget.empty();
 
         var allStudent = this.myStudentCollection.toJSON();
 
+        var absents = 0;
+
+        var presents = 0;
+
         for (var i = 0; i < allStudent.length; i++) {
 
             var student = allStudent[i];
+            if (!student.seen) {
+                absents++;
+            } else {
+                presents++;
+            }
             var studentTemplate = this.getTemplate(student);
             $renderTarget.append(studentTemplate);
         }
+        $('.class').html(allStudent.length);
+        $('.present').html(presents);
+        $('.truant').html(absents);
     }
 
 });
